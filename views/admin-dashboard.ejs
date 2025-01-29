@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <div class="header">
+        <span>Admin Dashboard</span>
+        <button onclick="logoutUser()" class="btn logout-btn">Logout</button>
+    </div>
+
+    <div class="grid-container">
+        <!-- New Event Form -->
+        <div class="grid-item">
+            <div class="content">
+                <h3>Add New Event</h3>
+                <a href="/add-event" class="btn">Add Event</a>
+            </div>
+        </div>
+
+        <% events.forEach(event => { %>
+        <div class="grid-item">
+            <div class="content">
+                <h3><%= event.name %></h3>
+                <p><%= event.date %> at <%= event.time %></p>
+                <p>Venue: <%= event.venue %></p>
+                <p>Team Limit: <%= event.team_limit %></p>
+                <p><%= event.description %></p>
+                <form action="/delete-event" method="post" style="display:inline;">
+                    <input type="hidden" name="eventId" value="<%= event.id %>">
+                    <button type="submit" class="btn delete-btn">Delete Event</button>
+                </form>
+                <a href="/edit-event/<%= event.id %>" class="btn edit-btn">Edit Event</a>
+            </div>
+        </div>
+        <% }); %>
+    </div>
+
+    <script>
+        function logoutUser() {
+            if (confirm("Are you sure you want to logout?")) {
+                window.location.href = "/logout";
+            }
+        }
+    </script>
+</body>
+</html>
