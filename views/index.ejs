@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GameTime Scheduler</title>
+
+  
+    <style>
+        /* Modern Reset */
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(to bottom right, #ff7e5f, #feb47b);
+            color: #2f2525;
+            line-height: 1.6;
+        }
+
+        .wrapper {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Navigation Bar */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background:#EFB036;
+            color: #1f1b79;
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .navbar__logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .navbar__links {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .navbar__links a {
+            color: #3c5cac;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+
+        .navbar__links a:hover {
+            background: #4C7B8B;
+        }
+
+        /* main Section */
+        .main {
+            background: linear-gradient(135deg, #1b9bab, #4C7B8B);
+            color: #fff;
+            text-align: center;
+            padding: 4rem 2rem;
+        }
+
+        .main__title {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .main__subtitle {
+            font-size: 1.4rem;
+            margin-bottom: 2rem;
+        }
+
+        .main__button {
+            display: inline-block;
+            padding: 0.8rem 2rem;
+            background: #ff5722;
+            color: #fff;
+            font-size: 1rem;
+            text-decoration: none;
+            border-radius: 50px;
+            transition: background 0.3s;
+        }
+
+        .main__button:hover {
+            background: #e64a19;
+        }
+
+        /* About Section */
+        .about {
+            padding: 3rem 2rem;
+            background: #fff;
+        }
+
+        .about__title {
+            font-size: 2.5rem;
+            color: #333;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .about__content {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .about__text {
+            flex: 1;
+            font-size: 1.2rem;
+            color: #666;
+        }
+
+        /* Features Section */
+        .features {
+            padding: 3rem 2rem;
+            background: #4C7B8B;
+        }
+
+        .features__title {
+            font-size: 2.5rem;
+            text-align: center;
+            color: #b1a22c;
+            margin-bottom: 2rem;
+        }
+
+        .features__grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .feature__card {
+            background: #fff;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+       
+        .feature__icon {
+            font-size: 3rem;
+            color: #81c784;
+            margin-bottom: 1rem;
+        }
+
+        .feature__title {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #444;
+        }
+
+        .feature__description {
+            color: #666;
+            font-size: 1rem;
+        }
+
+        /* Contact Section */
+        .contact {
+            padding: 3rem 2rem;
+            background: #c2d0ce;
+            color: #fff;
+            text-align: center;
+        }
+
+        .contact__title {
+            font-size: 2.5rem;
+            color: #ffab40;
+            margin-bottom: 2rem;
+        }
+
+        .contact__form {
+            display: grid;
+            gap: 1.5rem;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .contact__form input,
+        .contact__form textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        .contact__form button {
+            padding: 0.8rem;
+            background: #ffab40;
+            border: none;
+            color: #222;
+            font-size: 1rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .contact__form button:hover {
+            background: #ffc071;
+        }
+
+        .contact__subtitle {
+            font-size: 1.2rem;
+            color: #ccc;
+            margin-bottom: 1.5rem;
+        }
+
+        .contact__grid {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .contact__info {
+            background: #00332b;
+            padding: 2rem;
+            border-radius: 10px;
+            color: #fff;
+            text-align: left;
+        }
+
+        .contact__info h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .contact__info p {
+            margin-bottom: 0.5rem;
+        }
+
+        .contact__socials a {
+            color: #ffab40;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .contact__socials a:hover {
+            text-decoration: underline;
+        }
+
+        @media (min-width: 768px) {
+            .contact__grid {
+                flex-direction: row;
+                align-items: flex-start;
+            }
+
+            .contact__form {
+                flex: 2;
+            }
+
+            .contact__info {
+                flex: 1;
+            }
+        }
+
+        /* Footer */
+        .footer {
+            background: #333;
+            color: #ccc;
+            text-align: center;
+            padding: 1rem 0;
+        }
+
+        .footer__text {
+            font-size: 0.9rem;
+        }
+
+        @media (min-width: 768px) {
+            .about__content {
+                flex-wrap: nowrap;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="navbar__logo">GameTime Scheduler</div>
+        <div class="navbar__links">
+            <a href="#about">About</a>
+            <a href="#features">Features</a>
+            <a href="#contact">Contact</a>
+            <a href="/login">Login</a>
+            <a href="/register">Register</a>
+        </div>
+    </nav>
+
+    <!-- main Section -->
+    <section class="main">
+        <div class="wrapper">
+            <h1 class="main__title">Plan. Play. Win.</h1>
+            <p class="main__subtitle">Organize your sports events and teams effortlessly with GameTime Scheduler.</p>
+            <a href="#features" class="main__button">Discover More</a>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="about" id="about">
+        <div class="wrapper">
+            <h2 class="about__title">About GameTime Scheduler</h2>
+            <div class="about__content">
+                <p class="about__text">GameTime Scheduler simplifies event organization, scheduling, and team management for sports enthusiasts. Our platform is designed to make planning and collaboration seamless.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <div class="wrapper">
+            <h2 class="features__title">Features</h2>
+            <div class="features__grid">
+                <div class="feature__item">
+                    <h3>Advanced Team Management</h3>
+                    <p>Organize and coordinate your teams effortlessly with our intuitive tools.</p>
+                </div>
+                <div class="feature__item">
+                    <h3>Efficient Event Scheduling</h3>
+                    <p>Plan matches and events seamlessly, with automatic updates to participants.</p>
+                </div>
+                <div class="feature__item">
+                    <h3>Real-Time Notifications</h3>
+                    <p>Stay informed with instant updates on schedules, events, and more.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="contact" id="contact">
+    <div class="wrapper">
+        <h2 class="contact__title">Get in Touch</h2>
+        <p class="contact__subtitle">Have questions or need assistance? We're here to help! Drop us a message below or reach out via our social channels.</p>
+        <div class="contact__grid">
+            <!-- Contact Form -->
+            <form class="contact__form">
+               <input type="email" placeholder="Your Email Address" required>
+                <textarea placeholder="Type Your Message Here..." rows="5" required></textarea>
+                <button type="submit">Submit</button>
+            </form>
+            <!-- Contact Information -->
+            <div class="contact__info">
+                <h3>Contact Information</h3>
+                <p>Email: support@gametimescheduler.com</p>
+                <p>Phone: +1 234 567 890</p>
+                <p>Address: 123 GameTime Street, Sports City, USA</p>
+                <div class="contact__socials">
+                    <a href="#" title="Follow us on Facebook">Facebook</a> | 
+                    <a href="#" title="Follow us on Twitter">Twitter</a> | 
+                    <a href="#" title="Connect on LinkedIn">LinkedIn</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p class="footer__text">&copy; 2025 GameTime Scheduler. All rights reserved.</p>
+    </footer>
+</body>
+
+</html>
